@@ -4,25 +4,37 @@ import ProductList from "@/components/ProductList";
 export default function Home() {
   return (
     <main>
-      {/* Hero Section */}
-      <section className="bg-amber-100 py-12">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h1 className="text-5xl font-serif font-bold text-stone-800 mb-6">
-              Coleções
-            </h1>
-            <div className="relative h-64 w-full">
-              <Image
-                src="/images/banner.jpg"
-                alt="Antiguidades variadas"
-                fill
-                className="object-cover rounded-lg shadow-lg"
-                priority
-              />
-            </div>
+      {/* Categoria Redonda - Coleções Populares */}
+<section className="py-8 bg-amber-200">
+  <div className="container mx-auto px-4 ">
+    <h2 className="text-2xl font-serif font-bold text-stone-800 mb-8 text-center">
+      Coleções
+    </h2>
+
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 justify-items-center">
+      {[
+        { nome: "Relógios", img: "/icons/relogio.png" },
+        { nome: "Discos", img: "/icons/discos.png" },
+        { nome: "Capas", img: "/icons/capas.png" },
+        { nome: "Moedas", img: "/icons/moedas.png" },
+        { nome: "Carros", img: "/icons/carros.png" },
+      ].map((item, index) => (
+        <div key={index} className="flex flex-col items-center">
+          <div className="w-24 h-24 rounded-full bg-white shadow-md flex items-center justify-center">
+            <Image
+              src={item.img}
+              alt={item.nome}
+              width={48}
+              height={48}
+              className="object-contain"
+            />
           </div>
+          <span className="mt-2 text-sm text-stone-700 font-medium">{item.nome}</span>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* Featured Products */}
       <section className="py-16 bg-white">

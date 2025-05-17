@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-xl font-semibold mb-4">Antiguidades</h3>
+            <h3 className="text-xl font-semibold mb-4"> AACT - Antiguidades</h3>
             <p className="text-stone-300">
               Sua loja especializada em objetos únicos com história e valor. 
               Encontre tesouros do passado que contam histórias incríveis.
@@ -14,11 +14,10 @@ const Footer = () => {
           </div>
           
           <div>
-              <li><Link href="/" className="text-stone-300 hover:text-amber-300 transition-colors">Home</Link></li>
             <ul className="space-y-2">
               <li><a href="/sobre" className="text-stone-300 hover:text-amber-300 transition-colors">Sobre Nós</a></li>
               <li><a href="/contato" className="text-stone-300 hover:text-amber-300 transition-colors">Contato</a></li>
-              <li><a href="/admin" className="text-stone-300 hover:text-amber-300 transition-colors">Área Admin</a></li>
+              <li><a href="/perfil" className="text-stone-300 hover:text-amber-300 transition-colors">Área Usuario</a></li>
             </ul>
           </div>
           
@@ -50,10 +49,8 @@ const Footer = () => {
         
         <div className="mt-8 pt-6 border-t border-stone-700 text-center text-stone-400">
           <p>&copy; {new Date().getFullYear()} Antiguidades. Todos os direitos reservados.</p>
-        </div>
-        <div>
           <p>
-            &copy; {new Date().getFullYear()} Site Desenvolvido por <a href="http://github.com/mgosalan-dev" target="_blank" rel="noopener noreferrer">mgosalan-dev</a>
+            &copy;Desenvolvido por <a href="http://github.com/mgosalan-dev" target="_blank" rel="noopener noreferrer">mgosalan-dev</a>
           </p>
         </div>
       </div>

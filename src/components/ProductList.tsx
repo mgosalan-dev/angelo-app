@@ -87,7 +87,6 @@ const ProductList = () => {
         ))}
       </div>
       
-      {/* Elemento decorativo vintage */}
       <div className="flex justify-center mt-12">
         <div className="w-16 h-1 bg-amber-700"></div>
       </div>

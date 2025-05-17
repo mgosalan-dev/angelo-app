@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { Product } from '@/types';
 import { notFound, useRouter } from 'next/navigation';
+import { use } from 'react'; // Importando o hook use
 
 interface ProductDetailPageProps {
   params: {
@@ -11,6 +12,10 @@ interface ProductDetailPageProps {
 }
 
 export default function ProductDetailPage({ params }: ProductDetailPageProps) {
+  // Desempacotando params com React.use()
+  const unwrappedParams = use(params);
+  const id = unwrappedParams.id;
+  
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -22,14 +27,13 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
       setLoading(true);
       setError(null);
 
-      if (!params.id || isNaN(Number(params.id))) {
+      if (!id || isNaN(Number(id))) {
         notFound();
         return;
       }
 
       try {
-        // Corrigindo o fetch para usar template string
-        const response = await fetch(`/api/products/${params.id}`);
+        const response = await fetch(`/api/products/${id}`);
         if (response.status === 404) {
           notFound();
           return;
@@ -55,14 +59,13 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
     };
 
     fetchProduct();
-  }, [params.id]);
+  }, [id]); // Alterado de params.id para id
 
   const handleWhatsAppClick = useCallback(() => {
     if (!product) return;
     const price = typeof product.price === 'number'
       ? product.price.toFixed(2)
       : parseFloat(product.price).toFixed(2);
-    // Corrigindo os template strings
     const message = `Olá! Estou interessado no item: ${product.name} (Ref: ${product.id}) por €${price}`;
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
@@ -99,9 +102,9 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto px-4 py-12 sm:py-8 md:py-10 max-w-4xl">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="relative aspect-square bg-stone-100 rounded-lg overflow-hidden shadow-lg border-2 border-amber-800">
+        <div className="relative aspect-[4/3] sm:aspect-square bg-stone-100 rounded-lg overflow-hidden shadow-lg border-2 border-amber-800">
           <Image
             src={product.imageUrl}
             alt={product.name}
@@ -113,7 +116,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
         </div>
         <div className="flex flex-col space-y-6 bg-amber-50 p-6 rounded-lg shadow-md border border-amber-200">
           <div>
-            <h1 className="text-3xl font-serif font-bold text-stone-800">
+            <h1 className="text-2xl sm:text-2xl font-serif font-bold text-stone-800">
               {product.name}
             </h1>
             <div className="text-2xl font-bold text-amber-700 mt-2">
@@ -139,7 +142,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
           <div className="mt-auto pt-4">
             <button
               onClick={handleWhatsAppClick}
-              className="w-full py-3 px-6 bg-amber-200 text-stone-800 rounded-full hover:bg-amber-300 transition-colors font-medium flex items-center justify-center gap-2 shadow-md border border-amber-300"
+              className="w-full py-2 px-4 text-sm sm:text-base bg-amber-200 text-stone-800 rounded-full hover:bg-amber-300 transition-colors font-medium flex items-center justify-center gap-1 shadow-md border border-amber-300"
             >
               <WhatsAppIcon />
               Fale no WhatsApp para comprar
@@ -153,9 +156,13 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
 function WhatsAppIcon() {
   return (
-    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M17.498 14.382c-.301-.15-1.767-.867-2.04-.966-.273-.101-.473-.15-.673.15-.197.295-.771.964-.944 1.162-.175.195-.349.21-.646.075-.3-.15-1.263-.465-2.403-1.485-.888-.795-1.484-1.77-1.66-2.07-.174-.3-.019-.465.13-.615.136-.135.301-.345.451-.523.146-.181.194-.301.297-.496.1-.21.049-.375-.025-.524-.075-.15-.672-1.62-.922-2.206-.24-.584-.487-.51-.672-.51-.172-.015-.371-.015-.571-.015-.2 0-.523.074-.797.359-.273.3-1.045 1.02-1.045 2.475s1.07 2.865 1.219 3.075c.149.195 2.105 3.195 5.1 4.485.714.3 1.27.48 1.704.629.714.227 1.365.195 1.88.121.574-.091 1.767-.721 2.016-1.426.255-.705.255-1.29.18-1.425-.074-.135-.27-.21-.57-.345z"/>
-      <path d="M20.52 3.449C14.174-1.813 4.468.71.399 6.683c-4.56 6.72 1.036 14.42 6.241 17.834l.001-.001.175.107c.035.021.066.046.101.069l.016.011.071.04c.323.214.647.423.979.619.449.262.91.505 1.388.725 8.366 3.956 17.015-2.329 17.015-11.344 0-5.14-3.134-9.752-7.884-11.667zm1.009 11.139c-.221 3.099-1.718 5.847-3.993 7.675-2.65 2.115-6.303 2.736-9.556 1.635-3.256-1.103-5.699-3.755-6.544-7.155-.844-3.396.17-6.944 2.708-9.394 2.324-2.243 5.506-3.369 8.778-3.107l-1.622 1.617 2.043.005c-.016-.006.005-.017-.01-.021l-1.943-.016 1.546-1.545c2.304.642 4.357 2.145 5.733 4.143 1.378 2 2.024 4.55 1.859 7.164z"/>
+    <svg 
+      xmlns="http://www.w3.org/2000/svg" 
+      viewBox="0 0 448 512" 
+      className="w-5 h-5" 
+      fill="currentColor"
+    >
+      <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
     </svg>
   );
 }
