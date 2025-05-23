@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React from "react";
 import Link from "next/link";
@@ -58,28 +58,8 @@ const CartModal: React.FC = () => {
           <div className="flex-1 overflow-y-auto p-6">
             {items.length === 0 ? (
               <div className="text-center py-8">
-                <div className="text-stone-400 mb-4">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-16 h-16 mx-auto mb-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-                    />
-                  </svg>
-                </div>
-                <p className="text-stone-600 text-lg">
-                  Seu carrinho está vazio
-                </p>
-                <p className="text-stone-500 text-sm mt-2">
-                  Adicione alguns itens incríveis!
-                </p>
+                <p className="text-stone-600 text-lg">Seu carrinho está vazio</p>
+                <p className="text-stone-500 text-sm mt-2">Adicione alguns itens incríveis!</p>
               </div>
             ) : (
               <div className="space-y-4">
@@ -101,20 +81,24 @@ const CartModal: React.FC = () => {
 
                     {/* Informações do produto */}
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-stone-800 truncate">
-                        {item.name}
-                      </h3>
-                      <p className="text-stone-600 text-sm">
-                        R$ {item.price.toFixed(2)}
-                      </p>
+                      <h3 className="font-semibold text-stone-800 truncate">{item.name}</h3>
+                      <p className="text-stone-600 text-sm">R$ {item.price.toFixed(2)}</p>
+                      {/* Verificação de estoque */}
+                      {item.quantity > item.stock && (
+                        <p className="text-red-500 text-sm">
+                          A quantidade ultrapassa o estoque disponível!
+                        </p>
+                      )}
                     </div>
 
                     {/* Controles de quantidade */}
                     <div className="flex items-center space-x-2">
                       <button
-                        onClick={() =>
-                          updateQuantity(item.id, item.quantity - 1)
-                        }
+                        onClick={() => {
+                          if (item.quantity > 1) {
+                            updateQuantity(item.id, item.quantity - 1);
+                          }
+                        }}
                         className="w-8 h-8 rounded-full bg-stone-200 hover:bg-stone-300 flex items-center justify-center transition-colors"
                       >
                         <svg
@@ -125,11 +109,7 @@ const CartModal: React.FC = () => {
                           stroke="currentColor"
                           className="w-4 h-4"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M5 12h14"
-                          />
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
                         </svg>
                       </button>
 
@@ -138,9 +118,11 @@ const CartModal: React.FC = () => {
                       </span>
 
                       <button
-                        onClick={() =>
-                          updateQuantity(item.id, item.quantity + 1)
-                        }
+                        onClick={() => {
+                          if (item.quantity < item.stock) {
+                            updateQuantity(item.id, item.quantity + 1);
+                          }
+                        }}
                         className="w-8 h-8 rounded-full bg-stone-200 hover:bg-stone-300 flex items-center justify-center transition-colors"
                       >
                         <svg
@@ -151,11 +133,7 @@ const CartModal: React.FC = () => {
                           stroke="currentColor"
                           className="w-4 h-4"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 5v14m7-7H5"
-                          />
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14m7-7H5" />
                         </svg>
                       </button>
                     </div>
@@ -191,12 +169,8 @@ const CartModal: React.FC = () => {
             <div className="border-t p-6 space-y-4">
               {/* Total */}
               <div className="flex justify-between items-center">
-                <span className="text-lg font-semibold text-stone-800">
-                  Total:
-                </span>
-                <span className="text-xl font-bold text-amber-600">
-                  R$ {totalPrice.toFixed(2)}
-                </span>
+                <span className="text-lg font-semibold text-stone-800">Total:</span>
+                <span className="text-xl font-bold text-amber-600">R$ {totalPrice.toFixed(2)}</span>
               </div>
 
               {/* Botões */}

@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { Product } from '@/types';
 import { notFound, useRouter } from 'next/navigation';
+import { useCart } from '@/components/CartContext';
 
 interface ProductDetailPageProps {
   params: {
@@ -18,6 +19,8 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { addItem } = useCart();
+  
   const whatsappNumber = '936050675';
 
   useEffect(() => {
@@ -59,6 +62,11 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
     fetchProduct();
   }, [id]); // Alterado de params.id para id
 
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Impede que o clique no botão redirecione para a página do produto
+    addItem(product); // Adiciona o produto ao carrinho
+  };
+
   const handleWhatsAppClick = useCallback(() => {
     if (!product) return;
     const price = typeof product.price === 'number'
@@ -68,6 +76,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   }, [product]);
+
 
   if (loading) {
     return (
@@ -139,9 +148,16 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
           )}
           <div className="mt-auto pt-4">
             <button
+            onClick={handleAddToCart} // Adicionando a função de adicionar ao carrinho
+            className="w-full py-2 px-4 text-sm sm:text-base bg-amber-200 text-stone-800 rounded-full hover:bg-amber-300 transition-colors font-medium flex items-center justify-center gap-1 shadow-md border border-amber-300 mb-2"
+          >
+            Adicionar ao Carrinho
+          </button>
+            <button
               onClick={handleWhatsAppClick}
-              className="w-full py-2 px-4 text-sm sm:text-base bg-amber-200 text-stone-800 rounded-full hover:bg-amber-300 transition-colors font-medium flex items-center justify-center gap-1 shadow-md border border-amber-300"
+              className="w-full py-2 px-4 text-sm sm:text-base bg-amber-200 text-stone-800 rounded-full hover:bg-amber-300 transition-colors font-medium flex items-center justify-center gap-0 shadow-md border border-amber-300"
             >
+              
               <WhatsAppIcon />
               Fale no WhatsApp para comprar
             </button>
