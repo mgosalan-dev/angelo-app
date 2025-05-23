@@ -11,12 +11,36 @@ datasource db {
 }
 
 model Product {
-  id          Int   @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   name        String
   price       Float
   description String
   imageUrl    String
   category    String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  stock       Int         @default(0) // Novo campo de estoque
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  cartItems   CartItem[]  // Relacionamento com itens do carrinho
+}
+
+model Cart {
+  id        String     @id @default(cuid())
+  userId    String?    // Opcional para usuários não logados
+  sessionId String?    // Para carrinho de sessão
+  items     CartItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model CartItem {
+  id        String  @id @default(cuid())
+  cartId    String
+  productId Int
+  quantity  Int     @default(1)
+  cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([cartId, productId]) // Evita duplicatas
 }
