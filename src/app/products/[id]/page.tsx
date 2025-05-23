@@ -3,7 +3,6 @@ import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { Product } from '@/types';
 import { notFound, useRouter } from 'next/navigation';
-import { use } from 'react'; // Importando o hook use
 
 interface ProductDetailPageProps {
   params: {
@@ -13,9 +12,8 @@ interface ProductDetailPageProps {
 
 export default function ProductDetailPage({ params }: ProductDetailPageProps) {
   // Desempacotando params com React.use()
-  const unwrappedParams = use(params);
-  const id = unwrappedParams.id;
-  
+  // Usando params diretamente
+  const id = params.id;
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

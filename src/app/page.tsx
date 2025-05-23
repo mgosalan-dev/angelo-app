@@ -13,20 +13,19 @@ export default function Home() {
 
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 justify-items-center">
       {[
-        { nome: "Relógios", img: "/icons/relogio.png" },
-        { nome: "Discos", img: "/icons/discos.png" },
-        { nome: "Capas", img: "/icons/capas.png" },
-        { nome: "Moedas", img: "/icons/moedas.png" },
-        { nome: "Carros", img: "/icons/carros.png" },
+        { nome: "Relógios", img: "/images/relogio.jpg" },
+        { nome: "Discos", img: "/images/discos.jpeg" },
+        { nome: "Capas", img: "/images/capas.jpg" },
+        { nome: "Moedas", img: "/images/moeda.webp" },
+        { nome: "Carros", img: "/images/carro.jpg" },
       ].map((item, index) => (
         <div key={index} className="flex flex-col items-center">
-          <div className="w-24 h-24 rounded-full bg-white shadow-md flex items-center justify-center">
+          <div className="w-24 h-24 rounded-full bg-white shadow-md flex items-center overflow-hidden relative">
             <Image
               src={item.img}
               alt={item.nome}
-              width={48}
-              height={48}
-              className="object-contain"
+              fill
+              className="object-cover rounded-fill"
             />
           </div>
           <span className="mt-2 text-sm text-stone-700 font-medium">{item.nome}</span>
