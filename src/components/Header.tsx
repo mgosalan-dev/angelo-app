@@ -9,7 +9,7 @@ function Header() {
   const { totalItems, openModal } = useCart();
 
   return (
-    <header className="bg-amber-100 p-4 sticky top-0 z-10 shadow-md">
+    <header className="bg-yellow-800 p-4 sticky top-0 z-10 shadow-md">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
         <div className="flex items-center mb-2 md:mb-0">
           <Link href="/" className="text-2xl font-bold text-stone-800 hover:text-stone-600">
@@ -60,11 +60,6 @@ function Header() {
                 </span>
               )}
             </button>
-
-            {/* Link Carrinho Completo */}
-            <Link href="/cart" className="text-stone-800 hover:text-stone-600">
-              Carrinho Completo
-            </Link>
 
             {/* Ícone do perfil/admin */}
             <Link href="/admin" className="text-stone-800 hover:text-stone-600">

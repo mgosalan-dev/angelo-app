@@ -1,39 +1,50 @@
 import Image from "next/image";
+import Link from "next/link";
 import ProductList from "@/components/ProductList";
 
 export default function Home() {
   return (
     <main>
       {/* Categoria Redonda - Coleções Populares */}
-<section className="py-8 bg-amber-200">
-  <div className="container mx-auto px-4 ">
-    <h2 className="text-2xl font-serif font-bold text-stone-800 mb-8 text-center">
-      Coleções
-    </h2>
+      <section className="py-8 bg-yellow-600">
+        <div className="container mx-auto px-4 ">
+          <h2 className="text-2xl font-serif font-bold text-stone-800 mb-8 text-center">
+            Coleções
+          </h2>
 
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 justify-items-center">
-      {[
-        { nome: "Relógios", img: "/images/relogio.jpg" },
-        { nome: "Discos", img: "/images/discos.jpeg" },
-        { nome: "Capas", img: "/images/capas.jpg" },
-        { nome: "Moedas", img: "/images/moeda.webp" },
-        { nome: "Carros", img: "/images/carro.jpg" },
-      ].map((item, index) => (
-        <div key={index} className="flex flex-col items-center">
-          <div className="w-24 h-24 rounded-full bg-white shadow-md flex items-center overflow-hidden relative">
-            <Image
-              src={item.img}
-              alt={item.nome}
-              fill
-              className="object-cover rounded-fill"
-            />
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 justify-items-center">
+            {[
+              {
+                nome: "Relógios",
+                img: "/images/relogio.jpg",
+                slug: "relogios",
+              },
+              { nome: "Discos", img: "/images/discos.jpeg", slug: "discos" },
+              { nome: "Capas", img: "/images/capas.jpg", slug: "capas" },
+              { nome: "Moedas", img: "/images/moeda.webp", slug: "moedas" },
+              { nome: "Carros", img: "/images/carro.jpg", slug: "carros" },
+            ].map((item, index) => (
+              <Link
+                href={`/colecoes/${item.slug}`}
+                key={index}
+                className="flex flex-col items-center"
+              >
+                <div className="w-24 h-24 rounded-full bg-white shadow-md flex items-center overflow-hidden relative">
+                  <Image
+                    src={item.img}
+                    alt={item.nome}
+                    fill
+                    className="object-cover rounded-fill"
+                  />
+                </div>
+                <span className="mt-2 text-sm text-stone-700 font-medium">
+                  {item.nome}
+                </span>
+              </Link>
+            ))}
           </div>
-          <span className="mt-2 text-sm text-stone-700 font-medium">{item.nome}</span>
         </div>
-      ))}
-    </div>
-  </div>
-</section>
+      </section>
 
       {/* Featured Products */}
       <section className="py-16 bg-white">
@@ -46,7 +57,7 @@ export default function Home() {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-12 bg-stone-100">
+      <section className="bg-stone-100">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Envio Grátis */}

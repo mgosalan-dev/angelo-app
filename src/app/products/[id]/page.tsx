@@ -12,8 +12,7 @@ interface ProductDetailPageProps {
 }
 
 export default function ProductDetailPage({ params }: ProductDetailPageProps) {
-  // Desempacotando params com React.use()
-  // Usando params diretamente
+  
   const id = params.id;
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
